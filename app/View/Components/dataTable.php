@@ -11,10 +11,15 @@ class dataTable extends Component
     /**
      * Create a new component instance.
      */
-    public 
-    public function __construct()
+    public string $id;
+    public string $ajaxUrl;
+    public array $columns;
+
+    public function __construct(string $id, string $ajaxUrl, array $columns)
     {
-        //
+        $this->id = $id;
+        $this->ajaxUrl = $ajaxUrl;
+        $this->columns = $columns;
     }
 
     /**

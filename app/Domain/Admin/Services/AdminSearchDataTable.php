@@ -4,14 +4,14 @@ namespace App\Domain\Admin\Services;
 use App\Domain\Admin\Models\Admin;
 use App\DTOs\AdminDTO;
 use App\DataTables\BaseDataTable;
-use App\DTOs\AdminDataTableDTO;
+use App\Domain\Admin\DTOs\AdminData;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 
 class AdminSearchDataTable extends BaseDataTable
 {
     protected string $modelClass = Admin::class;
-    protected string $dtoClass = AdminDataTableDTO::class;
+    protected string $dtoClass = AdminData::class;
 
     /**
      * Build the AJAX response using DataTables and the DTO.
@@ -19,10 +19,13 @@ class AdminSearchDataTable extends BaseDataTable
     public function build()
     {
         $query = $this->applySearch($this->query(), request('search.value'));
+            $models = $query->get();
 
-        return DataTables::eloquent($query)
-            ->setTransformer(fn ($model) => $this->dtoClass::fromModel($model))
-            ->toJson();
+            $dtos = $models->map(fn($model) => $this->dtoClass::fromModel($model));
+
+       return  DataTables::of($dtos)->toJson();
+
+        
     }
 
     /**
