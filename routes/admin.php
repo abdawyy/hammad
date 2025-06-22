@@ -23,11 +23,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
     // Protected admin routes
-    Route::middleware('auth:admin, is_active')->group(function () {
+    Route::middleware('auth:admin,isActive')->group(function () {
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
         Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
         Route::get('index', [AdminController::class, 'showAdminIndex'])->name('index');
         Route::get('data', [AdminController::class, 'data'])->name('data');
+
+        
 
 
 

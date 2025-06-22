@@ -41,9 +41,12 @@ class AdminSearchDataTable extends BaseDataTable
         })->values()->all();
     }
 
-    protected function resolveTitle(string $column): string
-    {
-        $parts = explode('.', $column);
-        return ucfirst(str_replace('_', ' ', end($parts)));
-    }
+protected function resolveTitle(string $column): string
+{
+    // Replace dot notation and underscores for translation keys
+    $key = str_replace(['.', '_'], ' ', $column);
+    return __('datatable.columns.' . $column) ?? ucfirst($key);
+}
+
+
 }

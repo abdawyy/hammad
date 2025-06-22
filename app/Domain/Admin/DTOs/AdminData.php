@@ -14,10 +14,10 @@ class AdminData
 
     public function __construct(array $data)
     {
-        $this->name     = $data['name'];
-        $this->email    = $data['email'];
+        $this->name = $data['name'];
+        $this->email = $data['email'];
         $this->password = $data['password'];
-        $this->role_id  = $data['role_id'];
+        $this->role_id = $data['role_id'];
 
         // Optional: Allow role_name if passed (used in fromModel)
         if (isset($data['role_name'])) {
@@ -36,16 +36,17 @@ class AdminData
     /**
      * Create from Eloquent model instance (for DataTable transformer)
      */
-    public static function fromModel(Admin $admin): self
+    public static function fromModel(Admin $admin): array
     {
-        return new self([
-            'name'       => $admin->name,
-            'email'      => $admin->email,
-            'password'   => '', // don't expose password in DataTable
-            'role_id'    => $admin->role_id,
-            'role_name' => $admin->role->name ?? null,
-        ]);
+        return [
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'role' => [
+                'name' => $admin->role->name ?? ''
+            ]
+        ];
     }
+
 
     /**
      * Define searchable relationship fields
