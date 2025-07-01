@@ -1,3 +1,5 @@
+
+
 <table id="{{ $id }}" class="table" data-url="{{ $ajaxUrl }}">
     <thead>
         <tr>
@@ -12,17 +14,27 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 <script>
-$(function () {
-    const table = $('#{{ $id }}');
-    table.DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: table.data('url'),
-        columns: @json($columns)
+    $(function () {
+        const table = $('#{{ $id }}');
+        table.DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: table.data('url'),
+            columns: @json($columns),
+            columnDefs: [
+                {
+                    targets: -1, // or the index of the actions column
+                    orderable: false,
+                    searchable: false,
+                    render: function (data) {
+                        return data;
+                    }
+                }
+            ]
+        });
     });
-});
-$('#admin-table').on('error.dt', function (e, settings, techNote, message) {
-    console.log('DataTables error:', message);
-});
+    $('#admin-table').on('error.dt', function (e, settings, techNote, message) {
+        console.log('DataTables error:', message);
+    });
 
 </script>

@@ -28,8 +28,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
         Route::get('index', [AdminController::class, 'showAdminIndex'])->name('index');
         Route::get('data', [AdminController::class, 'data'])->name('data');
+        Route::get('create', [AdminController::class, 'showAdminCreate'])->name('create');
+        Route::post('create', [AdminController::class, 'createAdmin'])->name('create.store');
 
-        
+
+
+
 
 
 

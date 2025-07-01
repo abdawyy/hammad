@@ -19,13 +19,14 @@ class AdminSearchDataTable extends BaseDataTable
     public function build()
     {
         $query = $this->applySearch($this->query(), request('search.value'));
-            $models = $query->get();
+        $models = $query->get();
 
-            $dtos = $models->map(fn($model) => $this->dtoClass::fromModel($model));
+        $dtos = $models->map(fn($model) => $this->dtoClass::fromModel($model));
 
-       return  DataTables::of($dtos)->toJson();
+        return DataTables::of($dtos)
+            ->rawColumns(['actions']) // ✅ Tell DataTables to render 'actions' as raw HTML
+            ->toJson();
 
-        
     }
 
     /**
@@ -41,12 +42,12 @@ class AdminSearchDataTable extends BaseDataTable
         })->values()->all();
     }
 
-protected function resolveTitle(string $column): string
-{
-    // Replace dot notation and underscores for translation keys
-    $key = str_replace(['.', '_'], ' ', $column);
-    return __('datatable.columns.' . $column) ?? ucfirst($key);
-}
+    protected function resolveTitle(string $column): string
+    {
+        // Replace dot notation and underscores for translation keys
+        $key = str_replace(['.', '_'], ' ', $column);
+        return __('datatable.columns.' . $column) ?? ucfirst($key);
+    }
 
 
 }

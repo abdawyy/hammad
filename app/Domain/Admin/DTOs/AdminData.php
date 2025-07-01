@@ -36,14 +36,19 @@ class AdminData
     /**
      * Create from Eloquent model instance (for DataTable transformer)
      */
-    public static function fromModel(Admin $admin): array
+    public static function fromModel(Admin $model): array
     {
         return [
-            'name' => $admin->name,
-            'email' => $admin->email,
+            'name' => $model->name,
+            'email' => $model->email,
             'role' => [
-                'name' => $admin->role->name ?? ''
-            ]
+                'name' => $model->role->name ?? ''
+            ],
+            'actions' => view('components.actions', [
+                'editRoute' => 'admin.index',
+                'deleteRoute' => 'admin.index',
+                'modelId' => $model->id
+            ])->render()
         ];
     }
 
@@ -67,6 +72,8 @@ class AdminData
             'name',
             'email',
             'role.name',
+            'actions',
+       
         ];
     }
 }
